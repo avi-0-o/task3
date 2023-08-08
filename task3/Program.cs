@@ -22,9 +22,8 @@ namespace task3
                 return;
             }
             MoveGenerator.moves = args;
-            int rounds = rnd.Next(3, 5), userMove, pcMove;
+            int rounds = rnd.Next(2, args.Length), userMove, pcMove;
             rounds = rounds % 2 == 0 ? rounds += 1 : rounds;
-            rounds = 5;
             string hashKey = "", userChr = " ";
             while (rounds-- > 0)
             {
@@ -36,13 +35,13 @@ namespace task3
                 Console.Write("Enter your action: ");
                 userChr = Console.ReadLine();
                 userChr = userChr == null ? " " : userChr;
-                if (int.TryParse(userChr, out userMove))
+                if (int.TryParse(userChr.Trim(), out userMove))
                 {
                     if (userMove == 0)
                     {
                         Rules.Winner(user.GetMoves(), pc.GetMoves());
                         Console.WriteLine();
-                        UserInterface.showResults(user.GetMoves(), pc.GetMoves());
+                        // UserInterface.showResults(user.GetMoves(), pc.GetMoves());  // soon
 
                         return;
                     }
@@ -54,7 +53,9 @@ namespace task3
                     }
                     user.SetMove(userMove);
                     Console.WriteLine("User move: " + MoveGenerator.moves[userMove - 1]);
-                    Console.WriteLine("Computer move: " + MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + hashKey + ((rounds == 0) ? "" : "\n-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"));
+                    Console.WriteLine("Computer move: " + MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + hashKey);
+                    Console.WriteLine("Result of round: "+Rules.GetWinner(userMove,pcMove));
+                    Console.WriteLine((rounds == 0) ? "" : "\n-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
                 }
                 else if (userChr.Trim() == "?")
                 {
@@ -63,6 +64,7 @@ namespace task3
                 }
                 else
                 {
+                    Console.WriteLine($"Invalid input it must between 0 - {MoveGenerator.moves.Length} or symbol '?'");
                     rounds++;
                 }
             }

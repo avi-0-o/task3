@@ -11,12 +11,6 @@ namespace task3
         public List<int> moveHistory = new List<int>() ;
         public void SetMove(int move) {
             this.moveHistory.Add(move-1);
-            /*
-            foreach (int item in moveHistory)
-            {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine(moveHistory.Length);*/
         }
 
         public int[] GetMoves() { return moveHistory.ToArray(); }
