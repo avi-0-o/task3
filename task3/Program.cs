@@ -11,9 +11,8 @@ namespace task3
     internal class Program
     {
 
-        static void Main()
+        static void Main(string[] args)
         {
-            string[] args = { "scissors", "paper", "rock", "hula", "mula" };
             Player pc = new Player();
             Player user = new Player();
             Random rnd = new Random();
