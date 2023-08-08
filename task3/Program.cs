@@ -4,21 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
-// input string and check 
 
-
-// classes
-
-// player 
-// winner
-// moveGenerator
-// keyGen
-// HMACGenerator
-
-//секретный ключ
-//делаем ход (pc) hmac(ключ+наш ход)
-//меню
-// help table
 
 namespace task3
 {
@@ -31,21 +17,22 @@ namespace task3
             Player pc = new Player();
             Player user = new Player();
             Random rnd = new Random();
-            args.Select(iter)
+            args.Select(iter => iter.Trim());
             if (isValid(args))  //program ends if args is not valid
             {
                 return;
             }
             MoveGenerator.moves = args;
-            int rounds = rnd.Next(3, 5), userMove,pcMove;
+            int rounds = rnd.Next(3, 5), userMove, pcMove;
             rounds = rounds % 2 == 0 ? rounds += 1 : rounds;
-            string hashKey="", userChr=" ";
+            rounds = 5;
+            string hashKey = "", userChr = " ";
             while (rounds-- > 0)
             {
                 hashKey = KeyGenerator.getRandom();
-                pcMove =rnd.Next(1,MoveGenerator.moves.Length+1);
+                pcMove = rnd.Next(1, MoveGenerator.moves.Length + 1);
                 pc.SetMove(pcMove);
-                Console.WriteLine("HMAC: "+HMACGenerator.Hmac(hashKey + MoveGenerator.moves[pcMove-1]));
+                Console.WriteLine("HMAC: " + HMACGenerator.Hmac(hashKey + MoveGenerator.moves[pcMove - 1]));
                 UserInterface.showActions();
                 Console.Write("Enter your action: ");
                 userChr = Console.ReadLine();
@@ -54,25 +41,36 @@ namespace task3
                 {
                     if (userMove == 0)
                     {
-                        // end of game 
+                        Rules.Winner(user.GetMoves(), pc.GetMoves());
+                        Console.WriteLine();
+                        UserInterface.showResults(user.GetMoves(), pc.GetMoves());
+
                         return;
-                    }    
-                    else if(userMove <0||userMove>MoveGenerator.moves.Length)
+                    }
+                    else if (userMove < 0 || userMove > MoveGenerator.moves.Length)
                     {
-                        Console.WriteLine($"Invalid move it must within 0 - {MoveGenerator.moves.Length} or symbol '?'");
+                        Console.WriteLine($"Invalid input it must between 0 - {MoveGenerator.moves.Length} or symbol '?'");
+                        rounds++;
+                        continue;
                     }
                     user.SetMove(userMove);
                     Console.WriteLine("User move: " + MoveGenerator.moves[userMove - 1]);
-                    Console.WriteLine("Computer move: "+ MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + hashKey);
+                    Console.WriteLine("Computer move: " + MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + hashKey + ((rounds == 0) ? "" : "\n-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"));
                 }
-                else if (userChr.Trim()=="?")
+                else if (userChr.Trim() == "?")
                 {
                     UserInterface.showHelp();
+                    rounds++;
                 }
                 else
                 {
                     rounds++;
                 }
+            }
+            if (rounds == -1)
+            {
+                Rules.Winner(user.GetMoves(), pc.GetMoves());
+                //UserInterface.showResults(user.GetMoves(), pc.GetMoves());
             }
 
         }
@@ -93,11 +91,7 @@ namespace task3
             return false;
         }
 
-        static bool isvalidInput(string[] input)
-        {
 
-            return false;
-        }
 
     }
 }

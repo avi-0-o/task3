@@ -9,7 +9,6 @@ namespace task3
 {
     internal class HMACGenerator
     {
-        
         static public string Hmac(string input)
         {
             Sha3Digest sha3 = new Sha3Digest(256);
@@ -18,9 +17,6 @@ namespace task3
             byte[] temp = new byte[sha3.GetDigestSize()];
             sha3.DoFinal(temp, 0);
             return BitConverter.ToString(temp).Replace("-", "");
-
         }
-
-
     }
 }

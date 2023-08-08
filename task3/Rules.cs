@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.X509;
+﻿using Microsoft.Win32.SafeHandles;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +9,24 @@ using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace task3
 {
-    internal class Rules { 
+    internal class Rules
+    {
 
-        static public string GetWinner(string userMove, string computerMove)
+        static public string GetWinner(int userIndex, int computerIndex)
         {
             string[] moves = MoveGenerator.moves;
             int halfLength = moves.Length / 2;
-            int userIndex = Array.IndexOf(moves, userMove);
-            int computerIndex = Array.IndexOf(moves, computerMove);
-
-            if (userIndex == computerIndex) 
+            if (userIndex == computerIndex)
                 return "Draw";
             else if ((computerIndex - userIndex + moves.Length) % moves.Length <= halfLength)
                 return "Computer Win";
             else
                 return "User Win";
-           
+
         }
-        
+
         static public void Winner(int[] UserMoves, int[] ComputerMoves)
-            {
+        {
             if (UserMoves is null)
             {
                 Console.WriteLine("User has no moves");
@@ -35,7 +34,7 @@ namespace task3
             }
             string[] moves = MoveGenerator.moves;
             byte[] result = new byte[3];
-            for (int i = 0; i < UserMoves.Length; i++) 
+            for (int i = 0; i < UserMoves.Length; i++)
             {
                 if (UserMoves[i] == ComputerMoves[i])
                     result[0]++;
@@ -44,12 +43,15 @@ namespace task3
                 else
                     result[2]++;
             }
-            Console.WriteLine("\t~~~~ Game Over ~~~~");
-            if (Array.IndexOf(result,result.Max())==0)
+            if (ComputerMoves.Length == UserMoves.Length)
+                Console.WriteLine("~~~~ Game Over ~~~~");
+            else
+                Console.WriteLine("    You are quiter :(");
+            if (Array.IndexOf(result, result.Max()) == 0)
             {
                 Console.WriteLine("\tDraw");
             }
-            else if(Array.IndexOf(result,result.Max())==1)
+            else if (Array.IndexOf(result, result.Max()) == 1)
             {
                 Console.WriteLine("\t Computer WIN :/");
             }

@@ -12,7 +12,7 @@ namespace task3
     {
         public static string[] moves= Array.Empty<string>();
 
-        public string GetMove(int index)
+        public static string GetMove(int index)
         {
             if (index < 0 || index > moves.Length)
                 return "";

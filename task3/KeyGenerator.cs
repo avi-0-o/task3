@@ -11,7 +11,6 @@ namespace task3
     {
         static public string getRandom()
         {
-
             RandomNumberGenerator generator = RandomNumberGenerator.Create();
             byte[] output = new byte[32];
             generator.GetBytes(output);

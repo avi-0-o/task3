@@ -8,10 +8,18 @@ namespace task3
 {
     internal class Player
     {
-        int[] moveHistory = Array.Empty<int>();
-        public void SetMove(int move) { moveHistory.Append(move-1); }
+        public List<int> moveHistory = new List<int>() ;
+        public void SetMove(int move) {
+            this.moveHistory.Add(move-1);
+            /*
+            foreach (int item in moveHistory)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine(moveHistory.Length);*/
+        }
 
-        public int[] GetMove() { return moveHistory; }
+        public int[] GetMoves() { return moveHistory.ToArray(); }
 
     }
 }
