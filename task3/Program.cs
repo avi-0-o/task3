@@ -11,9 +11,8 @@ namespace task3
     internal class Program
     {
 
-        static void Main()
+        static void Main(string[] args)
         {
-            string[] args = { "test", "test1", "test2", "test3","test4" };
             Player pc = new Player();
             Player user = new Player();
             Random rnd = new Random();
@@ -41,7 +40,7 @@ namespace task3
                     {
                         Rules.Winner(user.GetMoves(), pc.GetMoves());
                         Console.WriteLine();
-                        UserInterface.showResults(user.GetMoves(), pc.GetMoves());  // soon
+                        UserInterface.showResults(user.GetMoves(), pc.GetMoves()); 
 
                         return;
                     }
