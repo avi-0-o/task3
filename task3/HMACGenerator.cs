@@ -11,24 +11,17 @@ namespace task3
 {
     internal class HMACGenerator
     {
-        static public string Hmac(string input)
+        static public string Hmac(byte[] key,string input)
         {
-            {
+            byte[] data = Encoding.UTF8.GetBytes(input);
+
             using (HMACSHA256 hmac = new HMACSHA256(key))
             {
                 byte[] hashBytes = hmac.ComputeHash(data);
-                string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-                Console.WriteLine(hash);
+                string hash = BitConverter.ToString(hashBytes).Replace("-", "");
+                return hash;
             }
-        
 
-        
-            Sha3Digest sha3 = new Sha3Digest(256);
-            byte[] inputbyte = Encoding.UTF8.GetBytes(input);
-            sha3.BlockUpdate(inputbyte, 0, inputbyte.Length);
-            byte[] temp = new byte[sha3.GetDigestSize()];
-            sha3.DoFinal(temp, 0);
-            return BitConverter.ToString(temp).Replace("-", "");
         }
     }
 }

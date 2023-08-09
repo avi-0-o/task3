@@ -33,29 +33,24 @@ namespace task3
                 return;
             }
             string[] moves = MoveGenerator.moves;
-            byte[] result = new byte[3];
+            byte[] wins = new byte[3];      // [0] - draws; [1] - computer wins; [2] - user wins amount
             for (int i = 0; i < UserMoves.Length; i++)
             {
                 if (UserMoves[i] == ComputerMoves[i])
-                    result[0]++;
+                    wins[0]++;
                 else if ((ComputerMoves[i] - UserMoves[i] + moves.Length) % moves.Length <= moves.Length / 2)
-                    result[1]++;
+                    wins[1]++;
                 else
-                    result[2]++;
+                    wins[2]++;
             }
-            if (ComputerMoves.Length == UserMoves.Length)
-                Console.WriteLine("~~~~ Game Over ~~~~");
-            else
-                Console.WriteLine("    You are quiter :(");
-            if (Array.IndexOf(result, result.Max()) == 0)
-            {
-                Console.WriteLine("\tDraw");
-            }
-            else if (Array.IndexOf(result, result.Max()) == 1)
-            {
+            Console.WriteLine("~~~~ Game Over ~~~~");
+            if (wins[1] > wins[2]) 
                 Console.WriteLine("\t Computer WIN :/");
-            }
-            else { Console.WriteLine("\t User WIN !!!!"); }
+            else if (wins[1] < wins[2]) 
+                Console.WriteLine("\t User WIN !!!!");
+            else 
+                Console.WriteLine("\tDraw");
+
         }
     }
 }

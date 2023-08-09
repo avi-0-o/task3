@@ -13,7 +13,7 @@ namespace task3
     {
         static public void showHelp()
         {
-            string[] ColNames1 = { "PC\\User" };
+            string[] ColNames1 = { "User\\Computer" };
             string[] ColNames = ColNames1.Concat(MoveGenerator.moves).ToArray();
 
             var table = new ConsoleTable(ColNames);
@@ -34,27 +34,24 @@ namespace task3
             }
             Console.WriteLine(table);
         }
-        static public void showResults(int[] userMoves, int[] ComputerMoves) //on going
+        static public void showResults(int[] userMoves, int[] computerMoves) // show result of rounds
         {
-            if (userMoves is null || ComputerMoves is null)
+            if (userMoves is null || computerMoves is null)
             {
-                Console.WriteLine("User/computer has no moves");
+                Console.WriteLine("User or computer has no moves");
                 return;
             }
-            string[] Columns = new string[userMoves.Length];
-            Columns[0] = "Pc\\User";
-
-            /*Columns = Columns.Concat();*/
+            string[] Columns = { "User moves" }, Row = { "Computer moves" };
+            Columns = Columns.Concat(MoveGenerator.ExtractMoves(userMoves)).ToArray();
+            Row = Row.Concat(MoveGenerator.ExtractMoves(computerMoves)).ToArray();
             var table = new ConsoleTable(Columns);
+            table.AddRow(Row);
+            Row = new string[Row.Length];
+            Row[0] = "Results";
+            for (int i = 1; i < Row.Length; i++)
+                Row[i] = Rules.GetWinner(userMoves[i - 1], computerMoves[i-1]);
+            table.AddRow(Row);
             Console.WriteLine(table);
-            /*            for (int i = 1; i < Columns.Length; i++)
-                        {
-                            string[] Row = new String[Columns.Length];
-                            for (int j = 0; j < Columns.Length; j++)
-                            {
-
-                            }
-                        }*/
         }
         static public void showActions()
         {

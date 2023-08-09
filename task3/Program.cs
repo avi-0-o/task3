@@ -11,8 +11,9 @@ namespace task3
     internal class Program
     {
 
-        static void Main(string[] args)
+        static void Main()
         {
+            string[] args = { "test", "test1", "test2", "test3","test4" };
             Player pc = new Player();
             Player user = new Player();
             Random rnd = new Random();
@@ -22,15 +23,14 @@ namespace task3
                 return;
             }
             MoveGenerator.moves = args;
+            KeyGenerator key = new KeyGenerator();
             int rounds = rnd.Next(2, args.Length), userMove, pcMove;
             rounds = rounds % 2 == 0 ? rounds += 1 : rounds;
-            string hashKey = "", userChr = " ";
+            string userChr = " ";
             while (rounds-- > 0)
-            {
-                hashKey = KeyGenerator.getRandom();
+            {   
                 pcMove = rnd.Next(1, MoveGenerator.moves.Length + 1);
-                pc.SetMove(pcMove);
-                Console.WriteLine("HMAC: " + HMACGenerator.Hmac(hashKey + MoveGenerator.moves[pcMove - 1]));
+                Console.WriteLine("HMAC: " + HMACGenerator.Hmac(key.SetRandomKey(), MoveGenerator.moves[pcMove - 1]));
                 UserInterface.showActions();
                 Console.Write("Enter your action: ");
                 userChr = Console.ReadLine();
@@ -41,7 +41,7 @@ namespace task3
                     {
                         Rules.Winner(user.GetMoves(), pc.GetMoves());
                         Console.WriteLine();
-                        // UserInterface.showResults(user.GetMoves(), pc.GetMoves());  // soon
+                        UserInterface.showResults(user.GetMoves(), pc.GetMoves());  // soon
 
                         return;
                     }
@@ -51,9 +51,11 @@ namespace task3
                         rounds++;
                         continue;
                     }
+
+                    pc.SetMove(pcMove);
                     user.SetMove(userMove);
                     Console.WriteLine("User move: " + MoveGenerator.moves[userMove - 1]);
-                    Console.WriteLine("Computer move: " + MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + hashKey);
+                    Console.WriteLine("Computer move: " + MoveGenerator.moves[pcMove - 1] + "\nHMAC key: " + key.GetKey());
                     Console.WriteLine("Result of round: "+Rules.GetWinner(userMove,pcMove));
                     Console.WriteLine((rounds == 0) ? "" : "\n-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
                 }
@@ -71,7 +73,7 @@ namespace task3
             if (rounds == -1)
             {
                 Rules.Winner(user.GetMoves(), pc.GetMoves());
-                //UserInterface.showResults(user.GetMoves(), pc.GetMoves());
+                UserInterface.showResults(user.GetMoves(), pc.GetMoves());
             }
 
         }
